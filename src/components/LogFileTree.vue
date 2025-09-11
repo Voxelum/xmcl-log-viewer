@@ -31,8 +31,25 @@ function subPath(l: LogFileEntry) {
 </script>
 <style scoped>
 .log-tree {
-  max-height: 400px;
+  max-height: 340px;
   overflow: auto;
+  position: relative;
+  border: 1px solid #242424;
+  border-radius: 6px;
+  background: #161616;
+  margin-top: 8px;
+}
+
+h3 {
+  position: sticky;
+  top: 0;
+  background: #1d1d1d;
+  z-index: 2;
+  margin: 0;
+  padding: 6px 8px 6px;
+  font-size: 13px;
+  letter-spacing: .5px;
+  border-bottom: 1px solid #2a2a2a;
 }
 
 ul {
@@ -48,9 +65,7 @@ li {
   font-size: 12px;
 }
 
-li.active {
-  background: #333;
-}
+li.active { background: #333; }
 
 li:hover {
   background: #222;
