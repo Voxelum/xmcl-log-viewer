@@ -16,6 +16,7 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.30",
+    "vite-plugin-pwa": "^1.0.3",
     "@vitejs/plugin-vue": "^6.0.1",
     "typescript": "^5.4.0",
     "vite": "^7.1.5",

@@ -45,13 +45,14 @@ async function unzipNested(
           reportId: baseReportId,
           container: container?.label,
           containerTime: container?.time,
+          mtime: entry.date ? entry.date.getTime() : undefined,
         })
       } else if (lower.endsWith('device.json')) {
         const text = await entry.async('string')
         try {
           const json: DeviceInfo = JSON.parse(text)
           raw['device.json'] = new TextEncoder().encode(text)
-          ;(collector as any).__device = json
+            ; (collector as any).__device = json
         } catch (e) {
           console.warn('Failed parse device.json', e)
         }
@@ -87,6 +88,7 @@ export async function parseReportZip(file: File): Promise<ReportBundle> {
     device,
     logs,
     rawFiles: raw,
+    lastModified: file.lastModified,
   }
 }
 

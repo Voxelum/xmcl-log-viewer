@@ -11,7 +11,7 @@
 
   <main>
       <aside>
-        <ReportList :reports="reports" v-model="selectedReportId" />
+        <ReportList :reports="sortedReports" v-model="selectedReportId" />
         <DeviceInfoPanel :device="currentReport?.device" />
         <LogFileTree v-if="currentReport" :log-files="currentReport.logs" v-model="selectedLogPath" />
       </aside>
@@ -35,6 +35,15 @@ import { parseMultipleReports, parseReportZip } from './logic/zip'
 import type { ReportBundle } from './types'
 
 const reports = ref<ReportBundle[]>([])
+const sortedReports = computed(() => {
+  return [...reports.value].sort((a, b) => {
+    const ta = a.lastModified ?? 0
+    const tb = b.lastModified ?? 0
+    if (tb !== ta) return tb - ta // newest first
+    debugger
+    return a.id.localeCompare(b.id)
+  })
+})
 const selectedReportId = ref<string | undefined>()
 const selectedLogPath = ref<string | undefined>()
 
@@ -46,7 +55,6 @@ async function onFilesPicked(e: Event) {
   if (!input.files) return
   const parsed = await parseMultipleReports(input.files)
   addReports(parsed)
-  input.value = ''
 }
 
 function addReports(newReports: ReportBundle[]) {
@@ -55,7 +63,7 @@ function addReports(newReports: ReportBundle[]) {
     if (existingIndex >= 0) reports.value.splice(existingIndex, 1, r)
     else reports.value.push(r)
   }
-  if (!selectedReportId.value && reports.value.length) selectedReportId.value = reports.value[0].id
+  if (!selectedReportId.value && sortedReports.value.length) selectedReportId.value = sortedReports.value[0].id
 }
 
 async function onFolderChange(e: Event) {
@@ -63,7 +71,6 @@ async function onFolderChange(e: Event) {
   const input = e.target as HTMLInputElement
   if (!input.files) return
   await handleZipFileList(input.files)
-  input.value = ''
 }
 
 async function handleZipFileList(files: FileList | File[]) {

@@ -15,6 +15,7 @@ export interface LogFileEntry {
   reportId: string // which report zip it belongs to (root folder name or file name)
   container?: string // nested zip (timestamp label or zip name)
   containerTime?: number // parsed time (ms) if container name is timestamp
+  mtime?: number // original file modified time from zip entry (ms)
 }
 
 export interface ReportBundle {
@@ -22,4 +23,5 @@ export interface ReportBundle {
   device?: DeviceInfo
   logs: LogFileEntry[]
   rawFiles: { [path: string]: Uint8Array }
+  lastModified?: number // original zip file lastModified timestamp (ms)
 }

@@ -4,9 +4,14 @@
     <ul>
       <li v-for="r in reports" :key="r.id" :class="{ active: r.id === modelValue }"
         @click="$emit('update:modelValue', r.id)">
-        <strong>{{ r.id }}</strong>
-        <span v-if="r.device"> - {{ r.device.platform }} {{ r.device.arch }}</span>
-        <small> ({{ r.logs.length }} logs)</small>
+        <div class="row1">
+          <strong>{{ r.id }}</strong>
+          <span v-if="r.device" class="dev">{{ r.device.platform }} {{ r.device.arch }}</span>
+          <small class="logs">({{ r.logs.length }} logs)</small>
+        </div>
+        <div v-if="r.lastModified" class="time" :title="new Date(r.lastModified).toLocaleString()">
+          {{ new Date(r.lastModified).toLocaleDateString() }}
+        </div>
       </li>
     </ul>
   </div>
@@ -45,12 +50,12 @@ ul {
   margin: 0;
 }
 
-li {
-  padding: 4px 6px;
-  cursor: pointer;
-  border-bottom: 1px solid #333;
-  font-size: 12px;
-}
+li { padding: 4px 6px 6px; cursor: pointer; border-bottom: 1px solid #333; font-size: 12px; display:flex; flex-direction:column; gap:2px; }
+.row1 { display:flex; gap:6px; align-items:center; flex-wrap:wrap; }
+.row1 strong { font-weight:600; }
+.row1 .dev { opacity:.7; font-size:11px; }
+.row1 .logs { opacity:.6; font-size:11px; }
+.time { font-size:10px; opacity:.55; letter-spacing:.3px; }
 
 li.active { background: #333; }
 
