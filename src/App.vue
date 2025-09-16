@@ -1,15 +1,29 @@
 <template>
-  <div class="app">
+  <div class="app font-sans text-white bg-gray-900 min-h-screen flex flex-col transition-colors duration-300">
     <header>
-      <h1>XMCL Log Viewer</h1>
+      <h1>{{ $t('title') }}</h1>
       <div class="actions">
-        <input type="file" multiple webkitdirectory directory @change="onFolderChange" />
-        <input type="file" multiple accept=".zip" @change="onFilesPicked" />
-        <button @click="pickDirectory">Open Folder (FS API)</button>
+        <button @click="triggerFolderInput" class="action-btn">{{ $t('chooseFolder') }}</button>
+        <input ref="folderInput" type="file" multiple webkitdirectory directory hidden @change="onFolderChange" />
+        <button @click="triggerZipInput" class="action-btn">{{ $t('chooseZipFiles') }}</button>
+        <input ref="zipInput" type="file" multiple accept=".zip" hidden @change="onFilesPicked" />
+        <button @click="pickDirectory" class="action-btn">{{ $t('openFolder') }}</button>
+      </div>
+      <div class="languages relative">
+        <button @click="toggleDropdown" class="bg-gray-700 text-white px-3 py-1 rounded flex items-center gap-1 hover:bg-gray-600 transition duration-200">
+          {{ currentLanguageName }} <span class="text-xs">▼</span>
+        </button>
+        <transition name="dropdown">
+          <div v-if="showDropdown" class="absolute top-full right-0 mt-1 bg-gray-800 border border-gray-600 rounded shadow-lg max-h-48 overflow-y-auto z-10 flex flex-col">
+            <button v-for="(name, code) in languages" :key="code" @click="selectLanguage(code)" class="block w-full text-left px-4 py-2 hover:bg-gray-700 transition duration-200">
+              {{ name }}
+            </button>
+          </div>
+        </transition>
       </div>
     </header>
 
-  <main>
+    <main>
       <aside>
         <ReportList :reports="sortedReports" v-model="selectedReportId" />
         <DeviceInfoPanel :device="currentReport?.device" />
@@ -19,14 +33,19 @@
         <h3>{{ currentLog.path }}</h3>
         <LogViewer :content="currentLog.content" :path="currentLog.path" />
       </section>
-      <section v-else class="empty">
-        <p>Select a log file to view.</p>
+      <section v-else class="empty flex-1 flex items-center justify-center text-gray-500 animate-pulse">
+        <p>{{ $t('selectLog') }}</p>
       </section>
     </main>
+    
+    <div v-if="loading" class="loading-overlay">
+      <div class="spinner"></div>
+    </div>
   </div>
 </template>
 <script setup lang="ts">
 import { ref, computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import ReportList from './components/ReportList.vue'
 import DeviceInfoPanel from './components/DeviceInfoPanel.vue'
 import LogFileTree from './components/LogFileTree.vue'
@@ -34,13 +53,52 @@ import LogViewer from './components/LogViewer.vue'
 import { parseMultipleReports, parseReportZip } from './logic/zip'
 import type { ReportBundle } from './types'
 
+const { locale } = useI18n()
+const showDropdown = ref(false)
+const loading = ref(false)
+const folderInput = ref<HTMLInputElement | null>(null)
+const zipInput = ref<HTMLInputElement | null>(null)
+
+const languages = {
+  en: 'English',
+  ru: 'Русский',
+  uk: 'Українська',
+  de: 'Deutsch',
+  'zh-CN': '简体中文',
+  'zh-TW': '繁體中文',
+  pl: 'Polski',
+  'en-US': 'American English',
+  es: 'Español',
+  ja: '日本語',
+  ko: '한국어',
+  'pt-BR': 'Português (Brasil)',
+  pt: 'Português'
+}
+const currentLanguageName = computed(() => languages[locale.value] || 'English')
+
+function toggleDropdown() {
+  showDropdown.value = !showDropdown.value
+}
+
+function selectLanguage(lang: string) {
+  locale.value = lang
+  showDropdown.value = false
+}
+
+function triggerFolderInput() {
+  if (folderInput.value) folderInput.value.click()
+}
+
+function triggerZipInput() {
+  if (zipInput.value) zipInput.value.click()
+}
+
 const reports = ref<ReportBundle[]>([])
 const sortedReports = computed(() => {
   return [...reports.value].sort((a, b) => {
     const ta = a.lastModified ?? 0
     const tb = b.lastModified ?? 0
     if (tb !== ta) return tb - ta // newest first
-    debugger
     return a.id.localeCompare(b.id)
   })
 })
@@ -51,10 +109,15 @@ const currentReport = computed(() => reports.value.find((r: ReportBundle) => r.i
 const currentLog = computed(() => currentReport.value?.logs.find((l: any) => l.path === selectedLogPath.value))
 
 async function onFilesPicked(e: Event) {
-  const input = e.target as HTMLInputElement
-  if (!input.files) return
-  const parsed = await parseMultipleReports(input.files)
-  addReports(parsed)
+  loading.value = true
+  try {
+    const input = e.target as HTMLInputElement
+    if (!input.files) return
+    const parsed = await parseMultipleReports(input.files)
+    addReports(parsed)
+  } finally {
+    loading.value = false
+  }
 }
 
 function addReports(newReports: ReportBundle[]) {
@@ -67,34 +130,48 @@ function addReports(newReports: ReportBundle[]) {
 }
 
 async function onFolderChange(e: Event) {
-  // Fallback input with webkitdirectory attribute
-  const input = e.target as HTMLInputElement
-  if (!input.files) return
-  await handleZipFileList(input.files)
+  loading.value = true
+  try {
+    const input = e.target as HTMLInputElement
+    if (!input.files) return
+    await handleZipFileList(input.files)
+  } finally {
+    loading.value = false
+  }
 }
 
 async function handleZipFileList(files: FileList | File[]) {
-  const onlyZips = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.zip'))
-  for (const f of onlyZips) {
-    try { addReports([await parseReportZip(f)]) } catch (e) { console.error(e) }
+  loading.value = true
+  try {
+    const onlyZips = Array.from(files).filter(f => f.name.toLowerCase().endsWith('.zip'))
+    for (const f of onlyZips) {
+      try { addReports([await parseReportZip(f)]) } catch (e) { console.error(e) }
+    }
+  } finally {
+    loading.value = false
   }
 }
 
 async function pickDirectory() {
-  if (!('showDirectoryPicker' in window)) {
-    alert('File System Access API not supported in this browser.')
-    return
-  }
-  // @ts-ignore
-  const dirHandle: FileSystemDirectoryHandle = await (window as any).showDirectoryPicker()
-  const zips: File[] = []
-  for await (const entry of (dirHandle as any).values()) {
-    if (entry.kind === 'file' && entry.name.toLowerCase().endsWith('.zip')) {
-      const file = await entry.getFile()
-      zips.push(file)
+  loading.value = true
+  try {
+    if (!('showDirectoryPicker' in window)) {
+      alert('File System Access API not supported in this browser.')
+      return
     }
+    // @ts-ignore
+    const dirHandle: FileSystemDirectoryHandle = await (window as any).showDirectoryPicker()
+    const zips: File[] = []
+    for await (const entry of (dirHandle as any).values()) {
+      if (entry.kind === 'file' && entry.name.toLowerCase().endsWith('.zip')) {
+        const file = await entry.getFile()
+        zips.push(file)
+      }
+    }
+    await handleZipFileList(zips)
+  } finally {
+    loading.value = false
   }
-  await handleZipFileList(zips)
 }
 </script>
 <style scoped>
@@ -124,6 +201,34 @@ header h1 {
   display: flex;
   gap: 8px;
   align-items: center;
+}
+
+.languages {
+  display: flex;
+  gap: 4px;
+  margin-left: 16px;
+}
+
+.languages button {
+  background: #2a2a2a;
+  border: none;
+  color: #ccc;
+  padding: 4px 8px;
+  font-size: 11px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background .15s, color .15s;
+}
+
+.languages button:hover {
+  background: #333;
+  color: #fff;
+}
+
+.languages button.active {
+  background: #2658d8;
+  color: #fff;
 }
 
 main {

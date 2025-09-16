@@ -1,0 +1,20 @@
+{
+  "title": "Visor de Logs XMCL",
+  "openFolder": "Abrir Carpeta (FS API)",
+  "selectLog": "Seleccione un archivo de log para ver.",
+  "reports": "Informes",
+  "logFiles": "Archivos de Log",
+  "deviceInfo": "Información del Dispositivo",
+  "noDevice": "No device.json",
+  "filter": "Filtro:",
+  "regexPlaceholder": "Regex o texto",
+  "linesInfo": "{visible} / {total} líneas",
+  "largeFile": "Archivo grande",
+  "filtering": "Filtrando...",
+  "logsCount": "{count} log | {count} logs",
+  "chooseFolder": "Elegir carpeta",
+  "chooseZipFiles": "Elegir archivos ZIP",
+  "warn": "ADVERTENCIA",
+  "error": "ERROR",
+  "clear": "LIMPIAR"
+}

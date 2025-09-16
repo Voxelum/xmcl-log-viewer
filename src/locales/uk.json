@@ -1,0 +1,20 @@
+{
+  "title": "Переглядач логів XMCL",
+  "openFolder": "Відкрити папку (FS API)",
+  "selectLog": "Виберіть файл логу для перегляду.",
+  "reports": "Звіти",
+  "logFiles": "Файли логів",
+  "deviceInfo": "Інформація про пристрій",
+  "noDevice": "Немає device.json",
+  "filter": "Фільтр:",
+  "regexPlaceholder": "Регулярний вираз або текст",
+  "linesInfo": "{visible} / {total} рядків",
+  "largeFile": "Великий файл",
+  "filtering": "Фільтрування…",
+  "logsCount": "{count} лог | {count} лога | {count} логів",
+  "chooseFolder": "Вибрати папку",
+  "chooseZipFiles": "Вибрати ZIP-файли",
+  "warn": "ПОПЕРЕДЖЕННЯ",
+  "error": "ПОМИЛКА",
+  "clear": "Очистити"
+}

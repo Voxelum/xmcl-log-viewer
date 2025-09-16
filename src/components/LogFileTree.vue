@@ -1,6 +1,6 @@
 <template>
   <div class="log-tree">
-    <h3>Log Files</h3>
+    <h3>{{ $t('logFiles') }}</h3>
     <ul>
       <li v-for="l in logFiles" :key="l.path" :class="{ active: l.path === modelValue }" @click="$emit('update:modelValue', l.path)">
         <div class="row1">

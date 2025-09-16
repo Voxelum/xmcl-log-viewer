@@ -1,0 +1,20 @@
+{
+  "title": "XMCL ログビューア",
+  "openFolder": "フォルダを開く (FS API)",
+  "selectLog": "ログファイルを選択して表示。",
+  "reports": "レポート",
+  "logFiles": "ログファイル",
+  "deviceInfo": "デバイス情報",
+  "noDevice": "device.json なし",
+  "filter": "フィルタ:",
+  "regexPlaceholder": "正規表現またはテキスト",
+  "linesInfo": "{visible} / {total} 行",
+  "largeFile": "大きなファイル",
+  "filtering": "フィルタリング中...",
+  "logsCount": "{count} ログ | {count} ログ",
+  "chooseFolder": "フォルダを選択",
+  "chooseZipFiles": "ZIPファイルを選択",
+  "warn": "警告",
+  "error": "エラー",
+  "clear": "クリア"
+}
