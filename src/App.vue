@@ -17,7 +17,7 @@
     </svg>
   </button>
   <transition name="dropdown">
-    <div v-if="showDropdown" class="language-dropdown absolute right-0 w-64 bg-gray-800 rounded-lg shadow-xl py-2 z-10 max-h-[80vh] overflow-y-auto border border-gray-700"
+    <div v-if="showDropdown" class="language-dropdown absolute right-0 w-72 bg-gray-800 rounded-lg shadow-xl py-2 z-10 max-h-[80vh] overflow-y-auto border border-gray-700"
          :class="dropdownPosition === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'">
       <button 
         v-for="(name, code) in languages" 
@@ -70,19 +70,19 @@ const folderInput = ref<HTMLInputElement | null>(null)
 const zipInput = ref<HTMLInputElement | null>(null)
 
 const languages = {
-  en: 'English',
-  ru: 'Русский',
-  uk: 'Українська',
-  de: 'Deutsch',
-  'zh-CN': '简体中文',
-  'zh-TW': '繁體中文',
-  pl: 'Polski',
-  'en-US': 'American English',
-  es: 'Español',
-  ja: '日本語',
-  ko: '한국어',
-  'pt-BR': 'Português (Brasil)',
-  pt: 'Português'
+  en: '🇬🇧 English',
+  ru: '🇷🇺 Русский',
+  uk: '🇺🇦 Українська',
+  de: '🇩🇪 Deutsch',
+  'zh-CN': '🇨🇳 简体中文',
+  'zh-TW': '🇹🇼 繁體中文',
+  pl: '🇵🇱 Polski',
+  'en-US': '🇺🇸 American English',
+  es: '🇪🇸 Español',
+  ja: '🇯🇵 日本語',
+  ko: '🇰🇷 한국어',
+  'pt-BR': '🇧🇷 Português (Brasil)',
+  pt: '🇵🇹 Português'
 }
 const currentLanguageName = computed(() => languages[locale.value] || 'English')
 
@@ -228,6 +228,55 @@ header h1 {
   position: relative;
   margin-left: 16px;
   margin-right: 16px;
+}
+
+.language-toggle-btn {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  background: linear-gradient(to bottom, #3a3a3a, #2a2a2a);
+  color: white;
+  font-weight: 500;
+  border: 1px solid #444;
+  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.language-toggle-btn::before {
+  content: '🌐';
+  font-size: 16px;
+}
+
+.language-dropdown {
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+  background: #1a1a1a;
+  border: 1px solid #333;
+  width: 280px;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.language-option {
+  border-radius: 8px;
+  margin: 4px;
+  padding: 10px 16px;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.language-option:hover {
+  background-color: #2a2a2a;
+  transform: translateX(2px);
+}
+
+.language-option.bg-gradient-to-r {
+  box-shadow: 0 2px 8px rgba(59,130,246,0.4);
+  border-left: 2px solid #4d8bf8;
 }
 .dropdown-enter-active, .dropdown-leave-active {
   transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
