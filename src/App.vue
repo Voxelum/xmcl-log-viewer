@@ -10,17 +10,27 @@
         <button @click="pickDirectory" class="action-btn">{{ $t('openFolder') }}</button>
       </div>
       <div class="languages relative">
-        <button @click="toggleDropdown" class="bg-gray-700 text-white px-3 py-1 rounded flex items-center gap-1 hover:bg-gray-600 transition duration-200">
-          {{ currentLanguageName }} <span class="text-xs">▼</span>
-        </button>
-        <transition name="dropdown">
-          <div v-if="showDropdown" class="absolute top-full right-0 mt-1 bg-gray-800 border border-gray-600 rounded shadow-lg max-h-48 overflow-y-auto z-10 flex flex-col">
-            <button v-for="(name, code) in languages" :key="code" @click="selectLanguage(code)" class="block w-full text-left px-4 py-2 hover:bg-gray-700 transition duration-200">
-              {{ name }}
-            </button>
-          </div>
-        </transition>
-      </div>
+  <button @click="toggleDropdown($event)" class="language-toggle-btn flex items-center gap-2 px-4 py-2 bg-gray-800 rounded-lg text-sm font-medium text-white hover:bg-gray-700 transition-colors">
+    {{ currentLanguageName }}
+    <svg class="language-icon w-4 h-4 transition-transform" :class="{ 'rotate-180': showDropdown }" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+    </svg>
+  </button>
+  <transition name="dropdown">
+    <div v-if="showDropdown" class="language-dropdown absolute right-0 w-64 bg-gray-800 rounded-lg shadow-xl py-2 z-10 max-h-[80vh] overflow-y-auto border border-gray-700"
+         :class="dropdownPosition === 'top' ? 'bottom-full mb-2' : 'top-full mt-2'">
+      <button 
+        v-for="(name, code) in languages" 
+        :key="code" 
+        @click="selectLanguage(code)" 
+        class="language-option block w-full text-left px-4 py-3 text-sm text-gray-200 hover:bg-gray-700 hover:text-white transition-all duration-200 border-l-2 border-transparent hover:border-blue-400"
+        :class="{ 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow-md border-l-2 border-blue-300': code === locale }"
+      >
+        {{ name }}
+      </button>
+    </div>
+  </transition>
+</div>
     </header>
 
     <main>
@@ -44,7 +54,7 @@
   </div>
 </template>
 <script setup lang="ts">
-import { ref, computed } from 'vue'
+import { ref, computed, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import ReportList from './components/ReportList.vue'
 import DeviceInfoPanel from './components/DeviceInfoPanel.vue'
@@ -76,10 +86,21 @@ const languages = {
 }
 const currentLanguageName = computed(() => languages[locale.value] || 'English')
 
-function toggleDropdown() {
-  showDropdown.value = !showDropdown.value
-}
+const dropdownPosition = ref('bottom')
 
+function toggleDropdown(event: MouseEvent) {
+  showDropdown.value = !showDropdown.value
+  if (showDropdown.value) {
+    nextTick(() => {
+      const button = event.target as HTMLElement
+      const dropdown = button.nextElementSibling as HTMLElement
+      const buttonRect = button.getBoundingClientRect()
+      const dropdownHeight = dropdown.offsetHeight
+      const spaceBelow = window.innerHeight - buttonRect.bottom
+      dropdownPosition.value = spaceBelow < dropdownHeight ? 'top' : 'bottom'
+    })
+  }
+}
 function selectLanguage(lang: string) {
   locale.value = lang
   showDropdown.value = false
@@ -188,8 +209,8 @@ header {
   padding: 10px 16px;
   background: #1d1d1d;
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
-  align-items: center;
 }
 
 header h1 {
@@ -204,31 +225,59 @@ header h1 {
 }
 
 .languages {
-  display: flex;
-  gap: 4px;
+  position: relative;
   margin-left: 16px;
+  margin-right: 16px;
 }
-
-.languages button {
-  background: #2a2a2a;
-  border: none;
-  color: #ccc;
-  padding: 4px 8px;
-  font-size: 11px;
-  border-radius: 4px;
-  cursor: pointer;
+.dropdown-enter-active, .dropdown-leave-active {
+  transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+.dropdown-enter-from, .dropdown-leave-to {
+  opacity: 0;
+  transform: translateY(-15px) scale(0.95);
+}
+.language-option {
+  transition: all 0.3s ease-in-out;
+}
+.language-option:hover {
+  transform: scale(1.03);
+  box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+}
+.language-option:active {
+  transform: scale(0.97);
+  transition: transform 0.1s ease-in-out;
+}
+.language-toggle-btn {
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+  background: linear-gradient(to bottom, #3a3a3a, #2a2a2a);
+  color: white;
   font-weight: 500;
-  transition: background .15s, color .15s;
+  border: 1px solid #444;
 }
 
-.languages button:hover {
-  background: #333;
-  color: #fff;
+.language-dropdown {
+  border-radius: 12px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.35);
+  background: #1a1a1a;
+  border: 1px solid #333;
 }
 
-.languages button.active {
-  background: #2658d8;
-  color: #fff;
+.language-option {
+  border-radius: 8px;
+  margin: 4px;
+  padding: 8px 12px;
+  transition: all 0.2s ease;
+}
+
+.language-option:hover {
+  background-color: #2a2a2a;
+  transform: translateX(2px);
+}
+
+.language-option.bg-gradient-to-r {
+  box-shadow: 0 2px 8px rgba(59,130,246,0.4);
+  border-left: 2px solid #4d8bf8;
 }
 
 main {
