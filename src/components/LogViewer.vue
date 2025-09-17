@@ -5,7 +5,6 @@
         <input v-model="filter" :placeholder="$t('regexPlaceholder')" />
       </label>
       <button @click="setFilter('WARN')" class="filter-btn bg-yellow-600 hover:bg-yellow-700">{{ $t('warn') }}</button>
-      <button @click="setFilter('ERROR')" class="filter-btn bg-red-600 hover:bg-red-700">{{ $t('error') }}</button>
       <button @click="clearFilter" class="filter-btn bg-gray-600 hover:bg-gray-500">{{ $t('clear') }}</button>
       <span v-if="stats" class="info">{{ $t('linesInfo', { visible: stats.visible, total: stats.total }) }}</span>
       <span v-if="isLarge" class="warn">{{ $t('largeFile') }}</span>
