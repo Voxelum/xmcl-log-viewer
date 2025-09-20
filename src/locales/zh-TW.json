@@ -1,0 +1,20 @@
+{
+  "title": "XMCL 日誌查看器",
+  "openFolder": "打開文件夾 (FS API)",
+  "selectLog": "選擇日誌文件查看。",
+  "reports": "報告",
+  "logFiles": "日誌文件",
+  "deviceInfo": "設備信息",
+  "noDevice": "無 device.json",
+  "filter": "過濾器:",
+  "regexPlaceholder": "正則表達式或文本",
+  "linesInfo": "{visible} / {total} 行",
+  "largeFile": "大文件",
+  "filtering": "過濾中...",
+  "logsCount": "{count} 個日誌 | {count} 個日誌",
+  "chooseFolder": "選擇文件夾",
+  "chooseZipFiles": "選擇ZIP文件",
+  "warn": "警告",
+  "error": "錯誤",
+  "clear": "清除"
+}

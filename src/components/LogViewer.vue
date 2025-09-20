@@ -1,15 +1,16 @@
 <template>
   <div class="log-viewer">
     <div class="toolbar">
-      <label>
-        Filter:
-        <input v-model="filter" placeholder="Regex or text" />
+      <label>{{ $t('filter') }}
+        <input v-model="filter" :placeholder="$t('regexPlaceholder')" />
       </label>
-      <span v-if="stats" class="info">{{ stats.visible }} / {{ stats.total }} lines</span>
-      <span v-if="isLarge" class="warn">Large file</span>
+      <button @click="setFilter('WARN')" class="filter-btn bg-yellow-400 hover:bg-yellow-500">{{ $t('warn') }}</button>
+      <button @click="clearFilter" class="filter-btn bg-gray-300 hover:bg-gray-400">{{ $t('clear') }}</button>
+      <span v-if="stats" class="info">{{ $t('linesInfo', { visible: stats.visible, total: stats.total }) }}</span>
+      <span v-if="isLarge" class="warn">{{ $t('largeFile') }}</span>
     </div>
     <div ref="editorEl" class="editor"></div>
-    <div v-if="filtering" class="overlay">Filtering...</div>
+    <div v-if="filtering" class="overlay">{{ $t('filtering') }}</div>
   </div>
 </template>
 
@@ -84,11 +85,18 @@ onMounted(() => {
 })
 
 onBeforeUnmount(() => { disposeFiltered(); disposeOriginal(); if (debounceHandle) window.clearTimeout(debounceHandle) })
+// In script
+function setFilter(type: string) {
+  filter.value = type
+}
+function clearFilter() {
+  filter.value = ''
+}
 </script>
 
 <style scoped>
 .log-viewer { display:flex; flex-direction:column; height:100%; position:relative; }
-.toolbar { display:flex; gap:16px; align-items:center; font-size:12px; padding:4px 0 6px; }
+.toolbar { display:flex; flex-wrap: wrap; gap:16px; align-items:center; font-size:12px; padding:4px 0 6px; }
 .toolbar label { display:flex; align-items:center; gap:6px; font-weight:500; letter-spacing:.3px; }
 .toolbar input {
   background:#1c1c1c;
@@ -108,4 +116,14 @@ onBeforeUnmount(() => { disposeFiltered(); disposeOriginal(); if (debounceHandle
 .editor { flex:1; min-height:300px; border:1px solid #2c2c2c; border-radius:8px; overflow:hidden; box-shadow:0 0 0 1px #000; }
 .overlay { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; background:rgba(0,0,0,.45); font-size:14px; backdrop-filter: blur(2px); }
 .warn { color:#d0a800; font-size:11px; background:#2e2500; padding:2px 6px; border-radius:4px; }
+.filter-btn {
+  color: #000000; /* Черный текст для лучшей видимости */
+  padding: 6px 12px;
+  border-radius: 6px;
+  margin-left: 8px;
+  transition: background 0.2s;
+  font-size: 14px;
+  font-weight: bold;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Добавляем тень для глубины */
+}
 </style>

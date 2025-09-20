@@ -1,0 +1,20 @@
+{
+  "title": "Visualizador de Logs XMCL",
+  "openFolder": "Abrir Pasta (FS API)",
+  "selectLog": "Selecione um arquivo de log para visualizar.",
+  "reports": "Relatórios",
+  "logFiles": "Arquivos de Log",
+  "deviceInfo": "Informações do Dispositivo",
+  "noDevice": "Nenhum device.json",
+  "filter": "Filtro:",
+  "regexPlaceholder": "Regex ou texto",
+  "linesInfo": "{visible} / {total} linhas",
+  "largeFile": "Arquivo grande",
+  "filtering": "Filtrando...",
+  "logsCount": "{count} log | {count} logs",
+  "chooseFolder": "Escolher Pasta",
+  "chooseZipFiles": "Escolher Arquivos ZIP",
+  "warn": "AVISO",
+  "error": "ERRO",
+  "clear": "Limpar"
+}

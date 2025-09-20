@@ -1,0 +1,20 @@
+{
+  "title": "Просмотрщик логов XMCL",
+  "openFolder": "Открыть папку (FS API)",
+  "selectLog": "Выберите файл лога для просмотра.",
+  "reports": "Отчеты",
+  "logFiles": "Файлы логов",
+  "deviceInfo": "Информация об устройстве",
+  "noDevice": "Нет device.json",
+  "filter": "Фильтр:",
+  "regexPlaceholder": "Регулярное выражение или текст",
+  "linesInfo": "{visible} / {total} строк",
+  "largeFile": "Большой файл",
+  "filtering": "Фильтрация…",
+  "logsCount": "{count} лог | {count} лога | {count} логов",
+  "chooseFolder": "Выбрать папку",
+  "chooseZipFiles": "Выбрать ZIP-файлы",
+  "warn": "ПРЕДУПРЕЖДЕНИЕ",
+  "error": "ОШИБКА",
+  "clear": "Очистить"
+}

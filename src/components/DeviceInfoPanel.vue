@@ -1,6 +1,6 @@
 <template>
   <div v-if="device" class="device-info">
-    <h3>Device Info</h3>
+    <h3>{{ $t('deviceInfo') }}</h3>
     <table>
       <tbody>
         <tr v-for="(v, k) in device" :key="k">
@@ -10,7 +10,7 @@
       </tbody>
     </table>
   </div>
-  <div v-else class="device-info-empty">No device.json</div>
+  <div v-else class="device-info-empty">{{ $t('noDevice') }}</div>
 </template>
 
 <script setup lang="ts">

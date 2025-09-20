@@ -1,0 +1,20 @@
+{
+  "title": "Przeglądarka Logów XMCL",
+  "openFolder": "Otwórz Folder (FS API)",
+  "selectLog": "Wybierz plik logu do просмотра.",
+  "reports": "Raporty",
+  "logFiles": "Pliki Logów",
+  "deviceInfo": "Informacje o Urządzeniu",
+  "noDevice": "Brak device.json",
+  "filter": "Filtr:",
+  "regexPlaceholder": "Wyrażenie regularne lub tekst",
+  "linesInfo": "{visible} / {total} linii",
+  "largeFile": "Duży plik",
+  "filtering": "Filtrowanie...",
+  "logsCount": "{count} log | {count} logi | {count} logów",
+  "chooseFolder": "Wybierz Folder",
+  "chooseZipFiles": "Wybierz Pliki ZIP",
+  "warn": "OSTRZEŻENIE",
+  "error": "BŁĄD",
+  "clear": "Wyczyść"
+}

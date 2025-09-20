@@ -1,0 +1,20 @@
+{
+  "title": "XMCL Log Viewer",
+  "openFolder": "Ordner öffnen (FS API)",
+  "selectLog": "Wählen Sie eine Protokolldatei zum Anzeigen aus.",
+  "reports": "Berichte",
+  "logFiles": "Protokolldateien",
+  "deviceInfo": "Geräteinformationen",
+  "noDevice": "Keine device.json",
+  "filter": "Filter:",
+  "regexPlaceholder": "Regex oder Text",
+  "linesInfo": "{visible} / {total} Zeilen",
+  "largeFile": "Große Datei",
+  "filtering": "Filtern…",
+  "logsCount": "{count} Log | {count} Logs",
+  "chooseFolder": "Ordner wählen",
+  "chooseZipFiles": "ZIP-Dateien wählen",
+  "warn": "WARNUNG",
+  "error": "FEHLER",
+  "clear": "Löschen"
+}

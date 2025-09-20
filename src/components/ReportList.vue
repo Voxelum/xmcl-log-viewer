@@ -1,13 +1,13 @@
 <template>
   <div class="report-list">
-    <h3>Reports</h3>
+    <h3>{{ $t('reports') }}</h3>
     <ul>
       <li v-for="r in reports" :key="r.id" :class="{ active: r.id === modelValue }"
         @click="$emit('update:modelValue', r.id)">
         <div class="row1">
           <strong>{{ r.id }}</strong>
           <span v-if="r.device" class="dev">{{ r.device.platform }} {{ r.device.arch }}</span>
-          <small class="logs">({{ r.logs.length }} logs)</small>
+          <small class="logs">({{ $t('logsCount', { count: r.logs.length }) }})</small>
         </div>
         <div v-if="r.lastModified" class="time" :title="new Date(r.lastModified).toLocaleString()">
           {{ new Date(r.lastModified).toLocaleDateString() }}

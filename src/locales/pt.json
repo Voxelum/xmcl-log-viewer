@@ -1,0 +1,20 @@
+{
+  "title": "Visualizador de Registos XMCL",
+  "openFolder": "Abrir Pasta (FS API)",
+  "selectLog": "Selecione um ficheiro de registo para ver.",
+  "reports": "Relatórios",
+  "logFiles": "Ficheiros de Registo",
+  "deviceInfo": "Informações do Dispositivo",
+  "noDevice": "Nenhum device.json",
+  "filter": "Filtro:",
+  "regexPlaceholder": "Regex ou texto",
+  "linesInfo": "{visible} / {total} linhas",
+  "largeFile": "Ficheiro grande",
+  "filtering": "A filtrar...",
+  "logsCount": "{count} registo | {count} registos",
+  "chooseFolder": "Escolher Pasta",
+  "chooseZipFiles": "Escolher Ficheiros ZIP",
+  "warn": "AVISO",
+  "error": "ERRO",
+  "clear": "Limpar"
+}
